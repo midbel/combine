@@ -2,9 +2,7 @@ package combine
 
 import (
 	"errors"
-	"flag"
 	"fmt"
-	"os"
 )
 
 var ErrDone = errors.New("done")
@@ -148,18 +146,18 @@ const (
 	linkit = ":::+"
 )
 
-func Parse(args []string) (Source, error) {
-	if len(args) == 0 {
-		return Empty(), nil
-	}
-	for i := 0; i < len(args); i++ {
-		if args[i] == combit || args[i] == linkit {
-			args = args[i+1:]
-			break
-		}
-	}
-	return Parse(args)
-}
+// func Parse(args []string) (Source, error) {
+// 	if len(args) == 0 {
+// 		return Empty(), nil
+// 	}
+// 	for i := 0; i < len(args); i++ {
+// 		if args[i] == combit || args[i] == linkit {
+// 			args = args[i+1:]
+// 			break
+// 		}
+// 	}
+// 	return Parse(args)
+// }
 
 const (
 	bindLowest int = iota
