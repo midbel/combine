@@ -6,6 +6,27 @@ import (
 	"testing"
 )
 
+func TestCombineAndLink(t *testing.T) {
+	var (
+		abc  = Single([]string{"A", "B", "C"})
+		one  = Single([]string{"1", "2", "3"})
+		xyz  = Single([]string{"X", "Y"})
+		two  = Single([]string{"11", "22"})
+		data = [][]string{
+			{"A", "1", "X", "11"},
+			{"A", "1", "Y", "22"},
+			{"B", "2", "X", "11"},
+			{"B", "2", "Y", "22"},
+			{"C", "3", "X", "11"},
+			{"C", "3", "Y", "22"},
+		}
+	)
+	src := CombineSources(LinkSources(abc, one), LinkSources(xyz, two))
+	if err := testSources(src, data); err != nil {
+		t.Errorf("combination failure: %s", err)
+	}
+}
+
 func TestLinkStrings(t *testing.T) {
 	data := []struct {
 		Left  []string
@@ -24,7 +45,7 @@ func TestLinkStrings(t *testing.T) {
 	for i, d := range data {
 		src := LinkStrings(d.Left, d.Right)
 		if err := testSources(src, d.Data); err != nil {
-			t.Errorf("%d) linkation failure (%s, %s): %s", i+1, d.Left, d.Right, err)
+			t.Errorf("%d) linkage failure (%s, %s): %s", i+1, d.Left, d.Right, err)
 		}
 	}
 }
