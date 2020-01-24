@@ -6,6 +6,41 @@ import (
 	"testing"
 )
 
+func TestParse(t *testing.T) {
+	data := []struct{
+		Source string
+		Sample [][]string
+	}{
+		{
+			Source: "A B C :::+ 1 2 3 ::: X Y :::+ 11 22",
+			Sample: [][]string{
+				{"A", "1", "X", "11"},
+				{"A", "1", "Y", "22"},
+				{"B", "2", "X", "11"},
+				{"B", "2", "Y", "22"},
+				{"C", "3", "X", "11"},
+				{"C", "3", "Y", "22"},
+			},
+		},
+		{
+			Source: "1 2 :::+ A B C",
+			Sample: [][]string{
+				{"1", "A"},
+				{"2", "B"},
+			},
+		},
+	}
+	for i, d := range data {
+		src, err := Parse(strings.Split(d.Source, " "))
+		if err != nil {
+			t.Errorf("%d) fail to parse %s", i+1, d)
+		}
+		if err := testSources(src, d.Sample); err != nil {
+			t.Errorf("%d) combination failure: %s", i+1, err)
+		}
+	}
+}
+
 func TestCombineAndLink(t *testing.T) {
 	var (
 		abc  = Single([]string{"A", "B", "C"})
